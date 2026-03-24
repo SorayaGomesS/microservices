@@ -1,0 +1,144 @@
+# Comunicação Síncrona entre Microsserviços com FastAPI
+
+## Descrição do Projeto
+
+Este projeto tem como objetivo demonstrar a comunicação síncrona entre dois microsserviços utilizando FastAPI.
+
+O sistema é composto por dois serviços:
+
+* **Serviço 1 (Produto):** responsável por fornecer dados simulados de produtos.
+* **Serviço 2 (Pedido):** responsável por consumir os dados do serviço 1 via requisição HTTP.
+
+A comunicação entre os serviços ocorre de forma síncrona, ou seja, o serviço 2 depende diretamente da resposta do serviço 1 para funcionar corretamente.
+
+---
+
+## Estrutura do Projeto
+
+```
+microservices/
+│
+├── service1/
+│   ├── main.py
+│   └── Dockerfile
+│
+├── service2/
+│   ├── main.py
+│   └── Dockerfile
+│
+└── docker-compose.yml
+```
+
+---
+
+## Tecnologias Utilizadas
+
+* Python
+* FastAPI
+* Docker
+* Docker Compose
+* Requests (para comunicação HTTP)
+
+---
+
+## Execução do Projeto
+
+1. Certifique-se de que o Docker Desktop está em execução.
+
+2. No terminal, navegue até a pasta do projeto:
+
+```
+cd microservices
+```
+
+3. Execute o comando:
+
+```
+docker-compose up --build
+```
+
+4. Aguarde a inicialização dos serviços.
+
+---
+
+## Endpoints
+
+### Serviço 1 (Produto)
+
+```
+http://localhost:8001/produto/{id}
+```
+
+### Serviço 2 (Pedido)
+
+```
+http://localhost:8002/pedido/{id}
+```
+
+---
+
+##  Testes Realizados
+
+### 1. Funcionamento Normal
+
+Ao acessar o endpoint do serviço 2:
+
+```
+http://localhost:8002/pedido/1
+```
+
+O serviço 2 realiza uma requisição ao serviço 1 e retorna os dados do produto juntamente com o pedido.
+
+ **Print do funcionamento:**
+![alt text](Funcionando.png)
+
+---
+
+### 2. Simulação de Falha na Comunicação
+
+Foi realizada a parada do serviço 1 utilizando o comando:
+
+```
+docker stop microservices-service1-1
+```
+
+Ao tentar acessar novamente o serviço 2, ocorre erro de comunicação, demonstrando a dependência entre os serviços.
+
+**Print da falha:**
+![alt text](<Erro de comunicação.png>)
+
+---
+
+### 3. Simulação de Timeout (Latência)
+
+Foi adicionada uma demora artificial no serviço 1 utilizando:
+
+```python
+time.sleep(5)
+```
+
+Como o serviço 2 possui um tempo limite (timeout), a requisição falha ao ultrapassar esse tempo.
+
+ **Print do timeout:**
+![alt text](Timeout.png)
+
+---
+
+## Problemas Identificados
+
+A comunicação síncrona entre microsserviços pode causar alguns problemas importantes:
+
+* **Acoplamento forte:** o serviço 2 depende diretamente do serviço 1 para funcionar.
+* **Latência:** o tempo de resposta aumenta devido à comunicação entre serviços.
+* **Falha em cascata:** se o serviço 1 falhar, o serviço 2 também será afetado.
+* **Baixa resiliência:** o sistema não consegue lidar bem com falhas externas.
+
+---
+
+## Conclusão
+
+A implementação demonstrou como funciona a comunicação síncrona entre microsserviços e evidenciou seus principais desafios, como dependência entre serviços e impacto de falhas.
+
+---
+
+
