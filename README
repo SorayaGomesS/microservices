@@ -12,6 +12,14 @@ Comunicação Síncrona entre Microsserviços com FastAPI
     A comunicação entre os serviços ocorre de forma síncrona, ou seja, o serviço 2 depende diretamente da resposta do serviço 1 para funcionar corretamente.
 
 
+- Como Executar o Projeto
+
+    Para executar o projeto, é necessário ter o Docker Desktop instalado e em execução.
+
+    No terminal, acessar a pasta do projeto e executar o comando:   docker-compose up --build
+
+    Após a inicialização, os serviços estarão disponíveis nos seguintes endereços:
+
 
 - Endpoints
 
@@ -30,44 +38,33 @@ Comunicação Síncrona entre Microsserviços com FastAPI
 
    - 1. Funcionamento Normal:
     
-        Ao acessar o endpoint do serviço 2:
-        
-        ```
-        http://localhost:8002/pedido/1
-        ```
-        
+        Ao acessar o endpoint do serviço 2:     http://localhost:8002/pedido/1
+
         O serviço 2 realiza uma requisição ao serviço 1 e retorna os dados do produto juntamente com o pedido.
         
-         Print do funcionamento está na pasta "Imagens": Funcionando.png
+        Print do funcionamento está na pasta "Imagens": Funcionando.png
         
  
+   - 2. Simulação de Falha na Comunicação
     
-  - 2. Simulação de Falha na Comunicação
-    
-        Foi realizada a parada do serviço 1 utilizando o comando:
-        
-        ```
-        docker stop microservices-service1-1
-        ```
+        Foi realizada a parada do serviço 1 utilizando o comando:  docker stop microservices-service1-1
         
         Ao tentar acessar novamente o serviço 2, ocorre erro de comunicação, demonstrando a dependência entre os serviços.
         
         Print da falha está na pasta "Imagens": Erro de comunicação.png
         
 
-    
-    - 3. Simulação de Timeout (Latência)
+   - 3. Simulação de Timeout (Latência)
     
         Foi adicionada uma demora artificial no serviço 1 utilizando:
         
-        ```python
+        python
         time.sleep(5)
-        ```
+
         
         Como o serviço 2 possui um tempo limite (timeout), a requisição falha ao ultrapassar esse tempo.
         
         Print da falha está na pasta "Imagens": Timeout.png
-
 
 
 - Problemas Identificados
@@ -80,11 +77,6 @@ Comunicação Síncrona entre Microsserviços com FastAPI
         - Baixa resiliência: o sistema não consegue lidar bem com falhas externas.
 
 
-
 - Conclusão
 
     A implementação demonstrou como funciona a comunicação síncrona entre microsserviços e evidenciou seus principais desafios, como dependência entre serviços e impacto de falhas.
-
-
-
-
